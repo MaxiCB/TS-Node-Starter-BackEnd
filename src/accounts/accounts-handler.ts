@@ -1,11 +1,7 @@
 // Express Types
 import { Request, Response } from "express";
 // Accounts Methods
-import { find, findById } from "./accounts-model";
-
-// This validates the user as well as updates the user metadata
-// This needs to stay serverside to allow for checking permissions and status
-// Need to break updating into seperate call, which is fired upon initial signup
+import { find, findById, add, update } from "./accounts-model";
 
 interface account {
   id: number;
@@ -36,7 +32,7 @@ const errorBuilder: ErrorBuilder = error => ({ error: error });
 
 export const getAccountsHandler = (_req: Request, res: Response) => {
   find()
-    .then((accounts: account) => {
+    .then((accounts: Array<account>) => {
       if (accounts) {
         const response = accountsResponseBuilder(accounts);
         return res.status(200).json(response);
@@ -74,3 +70,51 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
       res.status(500).json(err);
     });
 };
+
+export const addAccountHandler = (req: Request, res: Response) => {
+  const account = req.body;
+  if (account) {
+    add(account)
+      .then(status => {
+        const response = { message: "Created account", accountID: status[0] };
+        return res.send(response);
+      })
+      .catch((err: Error) => {
+        return res.send(err);
+      });
+  } else {
+    const error: Error = {
+      name: "Bad Request",
+      message: "Invalid information provided"
+    };
+    res.status(400).send(error);
+  }
+};
+
+export const updateAccountHandler = (req: Request, res: Response) => {
+  const { body } = req;
+  const accountUpdate = body;
+  console.log(body);
+  const { params } = req;
+  const id: number = parseInt(params.id);
+  if (accountUpdate) {
+    update(accountUpdate, id)
+      .then(status => {
+        const response = { message: "Updated account", accountID: status };
+        return res.send(response);
+      })
+      .catch((err: Error) => {
+        return res.send({error: err, message: 'Unigue Email is required'});
+      });
+  } else {
+    const error: Error = {
+      name: "Bad Request",
+      message: "Invalid information provided"
+    };
+    res.status(400).send(error);
+  }
+};
+
+export const removeAccountHandler = (req: Request, res: Response) => {
+    
+}
