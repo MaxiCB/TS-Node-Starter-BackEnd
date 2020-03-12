@@ -1,7 +1,7 @@
 // Express Types
 import { Request, Response } from "express";
 // Accounts Methods
-import { find, findById, add, update } from "./accounts-model";
+import { find, findById, add, update, remove } from "./accounts-model";
 
 interface account {
   id: number;
@@ -23,7 +23,7 @@ interface getAccountsResponse {
 }
 
 interface removeAccountResponse {
-  status: boolean;
+  deleted: number;
 }
 
 interface errorResponse {
@@ -36,11 +36,11 @@ interface error2 {
 }
 
 type AccountsResponseBuilder = (accounts: any) => getAccountsResponse;
+type RemoveResponseBuilder = (account: number) => removeAccountResponse;
 type ErrorBuilder = (error: Error) => errorResponse;
 
-const accountsResponseBuilder: AccountsResponseBuilder = accounts => ({
-  accounts: accounts
-});
+const accountsResponseBuilder: AccountsResponseBuilder = accounts => ({accounts: accounts});
+const removeAccountBuilder: RemoveResponseBuilder = account => ({deleted: account})
 const errorBuilder: ErrorBuilder = error => ({ error: error });
 
 export const getAccountsHandler = (_req: Request, res: Response) => {
@@ -54,7 +54,7 @@ export const getAccountsHandler = (_req: Request, res: Response) => {
           // name: "No Users",
           message: "There are no users in the database"
         };
-        res.status(200).json(error);
+        return res.status(200).json(error);
       }
     })
     .catch((err: Error) => {
@@ -70,7 +70,7 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
     .then((account: account) => {
       if (account) {
         const response = accountsResponseBuilder(account);
-        res.status(200).json(response);
+        return res.status(200).json(response);
       } else {
         const error: Error = { //ctrl click error to see type deffinetion
           name: "Bad Request",
@@ -78,11 +78,11 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
           // stack: "hello",
           
         };
-        res.status(404).json(error);
+        return res.status(404).json(error);
       }
     })
     .catch((err: Error) => {
-      res.status(500).json(err);
+      return res.status(500).json(err);
     });
 };
 
@@ -102,7 +102,7 @@ export const addAccountHandler = (req: Request, res: Response) => {
       name: "Bad Request",
       message: "Invalid information provided"
     };
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 };
 
@@ -119,19 +119,35 @@ export const updateAccountHandler = (req: Request, res: Response) => {
         return res.send(response);
       })
       .catch((err: Error) => {
-        return res.send({error: err, message: 'Unigue Email is required'});
+        return res.send({ error: err, message: "Unigue Email is required" });
       });
   } else {
     const error: Error = {
       name: "Bad Request",
       message: "Invalid information provided"
     };
-    res.status(400).send(error);
+    return res.status(400).send(error);
   }
 };
 
 export const removeAccountHandler = (req: Request, res: Response) => {
-    
-}
-
+  const { params } = req;
+  const id: number = parseInt(params.id);
+  remove(id)
+    .then(deleted => {
+      if (deleted) {
+        const response = removeAccountBuilder(deleted)
+        return res.json(response);
+      } else {
+        return res.status(404).json({ mesage: "Could not find an account with that ID" });
+      }
+    })
+    .catch(() => {
+      const error: Error = {
+        name: "Internal Server Error",
+        message: "Failed to check and delete account"
+      };
+      return res.status(500).send(error);
+    });
+};
 
