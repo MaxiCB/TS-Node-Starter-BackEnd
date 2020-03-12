@@ -65,6 +65,8 @@ export const getPostHandler = (req: Request, res: Response) => {
     const id: number = parseInt(params.id);
     /// omg typse script is AMZIng i did ctrl clcik and realized i was missing id
     findById(id) // dont understand why this is erroring out
+
+    
     .then((post: post) => {
         if(post){
             const response = postResponseBuilder(post)
