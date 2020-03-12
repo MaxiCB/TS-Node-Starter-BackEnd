@@ -9,6 +9,7 @@ import helmet from "helmet";
 
 // Routers
 import AccountsRouter from './accounts/accounts-router';
+import PostsRouter from './posts/post-router'
 
 dotenv.config();
 
@@ -38,6 +39,7 @@ app.get('/', (req, res) => {
 
 // Routers
 app.use('/api/users', AccountsRouter)
+app.use('/api/posts' , PostsRouter)
 
 /**
  * Server Activation
