@@ -7,8 +7,16 @@ interface account {
   id: number;
   email: string;
   first_name: string;
-  last_name: string;
+  last_name?: string;
 }
+
+const obj: account = {
+  email: "devin@gmail",
+  id: 3,
+  first_name: "devin"
+  // last name missing ## note ?
+} 
+
 
 interface getAccountsResponse {
   accounts: any;
@@ -20,6 +28,11 @@ interface removeAccountResponse {
 
 interface errorResponse {
   error: Error;
+}
+
+interface error2 { 
+  message: string,
+  id?: number
 }
 
 type AccountsResponseBuilder = (accounts: any) => getAccountsResponse;
@@ -37,8 +50,8 @@ export const getAccountsHandler = (_req: Request, res: Response) => {
         const response = accountsResponseBuilder(accounts);
         return res.status(200).json(response);
       } else {
-        const error: Error = {
-          name: "No Users",
+        const error: error2 = {
+          // name: "No Users",
           message: "There are no users in the database"
         };
         return res.status(200).json(error);
@@ -59,9 +72,11 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
         const response = accountsResponseBuilder(account);
         return res.status(200).json(response);
       } else {
-        const error: Error = {
+        const error: Error = { //ctrl click error to see type deffinetion
           name: "Bad Request",
-          message: "Invalid account id"
+          message: "Invalid account id",
+          // stack: "hello",
+          
         };
         return res.status(404).json(error);
       }
@@ -135,3 +150,4 @@ export const removeAccountHandler = (req: Request, res: Response) => {
       return res.status(500).send(error);
     });
 };
+

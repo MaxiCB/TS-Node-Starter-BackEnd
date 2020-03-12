@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "webpack-dev-server --inline --hot",
-    "start": "node dist/index",
+    "start": "node dist/index.js",
     "webpack": "webpack --config webpack.config.ts",
     "build": "webpack -p"
   },

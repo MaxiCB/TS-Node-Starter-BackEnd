@@ -1,0 +1,28 @@
+
+import db from '../../data/dbConfig'
+
+export const find = () => {
+  return db("posts");
+}
+
+export const findById = (id: number) => {
+  return db("posts")
+    .where({ id })
+    .first();
+}
+
+export const add = (data: object) => {
+  return db("posts").insert(data);
+}
+
+export const update = (changes: any, id: number) => {
+  return db("posts")
+    .where({ id })
+    .update(changes);
+}
+
+export const remove = (id: number) => {
+  return db("posts")
+    .where({ id })
+    .del();
+}
