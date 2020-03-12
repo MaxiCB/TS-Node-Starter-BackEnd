@@ -52,10 +52,30 @@ export const getPostsHandler = (_req: Request, res: Response) => {
             return res.status(200).send(response)
         }
     })
-    
     .catch( (err: Error) => {
         const error = errorResponseBuilder(err)
         return res.status(500).send(error)
     })
+}
 
+export const getPostHandler = (req: Request, res: Response) => {
+    findById() // dont understand why this is erroring out
+    .then((post: post) => {
+        if(post){
+            const response = postResponseBuilder(post)
+            return res.send(response)
+        }
+        else{
+            const err: Error = {
+                name: "no post",
+                message: "no post inside of the Database with this ID"   
+            }
+            const response = errorResponseBuilder(err)
+            return res.status(200).send(response)
+        }
+    })
+    .catch( (err: Error) => {
+        const error = errorResponseBuilder(err)
+        return res.status(500).send(error)
+    })
 }
