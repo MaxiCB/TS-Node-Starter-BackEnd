@@ -2,46 +2,12 @@
 import { Request, Response } from "express";
 // Accounts Methods
 import { find, findById, add, update, remove } from "./accounts-model";
-
-interface account {
-  id: number;
-  email: string;
-  first_name: string;
-  last_name?: string;
-}
-
-const obj: account = {
-  email: "devin@gmail",
-  id: 3,
-  first_name: "devin"
-  // last name missing ## note ?
-} 
-
-
-interface getAccountsResponse {
-  accounts: any;
-}
-
-interface removeAccountResponse {
-  deleted: number;
-}
-
-interface errorResponse {
-  error: Error;
-}
-
-interface error2 { 
-  message: string,
-  id?: number
-}
-
-type AccountsResponseBuilder = (accounts: any) => getAccountsResponse;
-type RemoveResponseBuilder = (account: number) => removeAccountResponse;
-type ErrorBuilder = (error: Error) => errorResponse;
-
-const accountsResponseBuilder: AccountsResponseBuilder = accounts => ({accounts: accounts});
-const removeAccountBuilder: RemoveResponseBuilder = account => ({deleted: account})
-const errorBuilder: ErrorBuilder = error => ({ error: error });
+import {
+  account,
+  accountsResponseBuilder,
+  errorBuilder,
+  removeAccountBuilder
+} from "./types";
 
 export const getAccountsHandler = (_req: Request, res: Response) => {
   find()
@@ -50,8 +16,8 @@ export const getAccountsHandler = (_req: Request, res: Response) => {
         const response = accountsResponseBuilder(accounts);
         return res.status(200).json(response);
       } else {
-        const error: error2 = {
-          // name: "No Users",
+        const error: Error = {
+          name: "No Users",
           message: "There are no users in the database"
         };
         return res.status(200).json(error);
@@ -72,11 +38,10 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
         const response = accountsResponseBuilder(account);
         return res.status(200).json(response);
       } else {
-        const error: Error = { //ctrl click error to see type deffinetion
+        const error: Error = {
+          //ctrl click error to see type deffinetion
           name: "Bad Request",
-          message: "Invalid account id",
-          // stack: "hello",
-          
+          message: "Invalid account id"
         };
         return res.status(404).json(error);
       }
@@ -136,10 +101,12 @@ export const removeAccountHandler = (req: Request, res: Response) => {
   remove(id)
     .then(deleted => {
       if (deleted) {
-        const response = removeAccountBuilder(deleted)
+        const response = removeAccountBuilder(deleted);
         return res.json(response);
       } else {
-        return res.status(404).json({ mesage: "Could not find an account with that ID" });
+        return res
+          .status(404)
+          .json({ mesage: "Could not find an account with that ID" });
       }
     })
     .catch(() => {
@@ -150,4 +117,3 @@ export const removeAccountHandler = (req: Request, res: Response) => {
       return res.status(500).send(error);
     });
 };
-
