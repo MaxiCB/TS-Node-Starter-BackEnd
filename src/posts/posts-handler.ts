@@ -17,8 +17,8 @@ export const getPostsHandler = (_req: Request, res: Response) => {
         return res.send(response);
       } else {
         const err: Error = {
-          name: "no posts",
-          message: "no posts inside of the Database"
+          name: "No Posts",
+          message: "There are no post in the database"
         };
         const response = errorResponseBuilder(err);
         return res.status(200).send(response);
@@ -32,24 +32,19 @@ export const getPostsHandler = (_req: Request, res: Response) => {
 
 export const getPostHandler = (req: Request, res: Response) => {
   const { params } = req;
-
-  //parse INT ?????
   const id: number = parseInt(params.id);
-
-  /// omg typse script is AMZIng i did ctrl clcik and realized i was missing id
-
-  findById(id) // dont understand why this is erroring out  ***UPDATE FIXED
+  findById(id)
     .then((post: post) => {
       if (post) {
         const response = postResponseBuilder(post);
-        return res.send(response);
+        return res.status(200).send(response);
       } else {
         const err: Error = {
-          name: "no post",
-          message: "no post inside of the Database with this ID"
+          name: "Bad Request",
+          message: "Invalid Post ID"
         };
         const response = errorResponseBuilder(err);
-        return res.status(200).send(response);
+        return res.status(404).send(response);
       }
     })
     .catch((err: Error) => {
@@ -61,25 +56,22 @@ export const getPostHandler = (req: Request, res: Response) => {
 export const removePostHandler = (req: Request, res: Response) => {
   const { params } = req;
   const id: number = parseInt(params.id);
-  //the reason I doubled nested these was to give a more acurate error if the was trying to delete something that deosnt exist
-  findById(id)
-    .then((post: post) => {
-      if (post) {
-        remove(id).then((id: number) => {
-          const response = removePostResponseBuilder(id);
-          return res.send(response);
-        });
+  remove(id)
+    .then(deleted => {
+      if (deleted) {
+        const response = removePostResponseBuilder(deleted);
+        return res.json(response);
       } else {
-        const err: Error = {
-          name: "no post with this iD",
-          message: "no post inside of the Database with this ID"
-        };
-        const response = errorResponseBuilder(err);
-        return res.status(200).send(response);
+        return res
+          .status(404)
+          .json({ mesage: "Could not find an post with that ID" });
       }
     })
-    .catch((err: Error) => {
-      const error = errorResponseBuilder(err);
+    .catch(() => {
+      const error: Error = {
+        name: "Internal Server Error",
+        message: "Failed to check and delete post"
+      };
       return res.status(500).send(error);
     });
 };
@@ -91,14 +83,14 @@ export const addPostHandler = (req: Request, res: Response) => {
       .then((post: post) => {
         if (post) {
           const response = postResponseBuilder(post);
-          return res.send(response);
+          return res.status(200).send(response);
         } else {
           const err: Error = {
-            name: "no post",
-            message: "no post inside of the Database with this ID"
+            name: "Bad Request",
+            message: "Unable to find a post with the provided ID"
           };
           const response = errorResponseBuilder(err);
-          return res.status(200).send(response);
+          return res.status(404).send(response);
         }
       })
       .catch((err: Error) => {
@@ -108,28 +100,24 @@ export const addPostHandler = (req: Request, res: Response) => {
   });
 };
 export const updatePostHandler = (req: Request, res: Response) => {
-    const post: post = req.body;
-    const { params } = req;
+  const { body } = req;
+  const postUpdate = body;
+  const { params } = req;
   const id: number = parseInt(params.id);
-    update(post, id )
-    .then((id: number) => {
-        findById(id)
-      .then((post: post) => {
-        if (post) {
-          const response = postResponseBuilder(post);
-          return res.send(response);
-        } else {
-          const err: Error = {
-            name: "no post",
-            message: "no post inside of the Database with this ID"
-          };
-          const response = errorResponseBuilder(err);
-          return res.status(200).send(response);
-        }
+  if (postUpdate) {
+    update(postUpdate, id)
+      .then(status => {
+        const response = { message: "Updated post", postID: status };
+        return res.status(200).send(response);
       })
       .catch((err: Error) => {
-        const error = errorResponseBuilder(err);
-        return res.status(500).send(error);
+        return res.status(400).send(err);
       });
-    })
-}
+  } else {
+    const error: Error = {
+      name: "Bad Request",
+      message: "Invalid information provided"
+    };
+    return res.status(400).send(error);
+  }
+};
