@@ -5,11 +5,13 @@
 import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
+import * as bodyParser from "body-parser";
 import helmet from "helmet";
 
 // Routers
-import AccountsRouter from './accounts/accounts-router';
-import PostsRouter from './posts/post-router'
+import AccountsRouter from "./accounts/accounts-router";
+import PostsRouter from "./posts/post-router";
+import AuthRouter from "./auth/auth-router";
 
 dotenv.config();
 
@@ -18,12 +20,14 @@ dotenv.config();
  */
 
 if (!process.env.PORT) {
-    process.exit(1);
- }
- 
- const PORT: number = parseInt(process.env.PORT as string, 10);
- 
- const app = express();
+  process.exit(1);
+}
+
+console.log(process.env.NODE_ENV);
+
+const PORT: number = parseInt(process.env.PORT as string, 10);
+
+const app = express();
 
 /**
  *  App Configuration
@@ -31,23 +35,26 @@ if (!process.env.PORT) {
 
 app.use(helmet());
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.json({message: 'Hello World'})
-})
+app.get("/", (req, res) => {
+  res.json({ message: "Hello World" });
+});
 
 // Routers
-app.use('/api/users', AccountsRouter)
-app.use('/api/posts' , PostsRouter)
+app.use("/api/auth", AuthRouter);
+app.use("/api/users", AccountsRouter);
+app.use("/api/posts", PostsRouter);
 
 /**
  * Server Activation
  */
 
 const server = app.listen(PORT, () => {
-    console.log(`Listening on port ${PORT}`);
-  });
+  console.log(`Listening on port ${PORT}`);
+});
 
 /**
  * Webpack HMR Activation
@@ -60,7 +67,7 @@ interface WebpackHotModule {
     data: any;
     accept(
       dependencies: string[],
-      callback?: (updatedDependencies: ModuleId[]) => void,
+      callback?: (updatedDependencies: ModuleId[]) => void
     ): void;
     accept(dependency: string, callback?: () => void): void;
     accept(errHandler?: (err: Error) => void): void;
@@ -68,9 +75,9 @@ interface WebpackHotModule {
   };
 }
 
-declare const module: WebpackHotModule
+declare const module: WebpackHotModule;
 
 if (module.hot) {
-    module.hot.accept();
-    module.hot.dispose(() => server.close());
- }
+  module.hot.accept();
+  module.hot.dispose(() => server.close());
+}

@@ -1,7 +1,7 @@
 // Express Types
 import { Request, Response } from "express";
 // Accounts Methods
-import { find, findById, add, update, remove } from "./accounts-model";
+import { find, findById, update, remove } from "./accounts-model";
 import {
   account,
   accountsResponseBuilder,
@@ -49,26 +49,6 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
     .catch((err: Error) => {
       return res.status(500).json(err);
     });
-};
-
-export const addAccountHandler = (req: Request, res: Response) => {
-  const account = req.body;
-  if (account) {
-    add(account)
-      .then(status => {
-        const response = { message: "Created account", accountID: status[0] };
-        return res.send(response);
-      })
-      .catch((err: Error) => {
-        return res.send(err);
-      });
-  } else {
-    const error: Error = {
-      name: "Bad Request",
-      message: "Invalid information provided"
-    };
-    return res.status(400).send(error);
-  }
 };
 
 export const updateAccountHandler = (req: Request, res: Response) => {

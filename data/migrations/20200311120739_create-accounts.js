@@ -11,6 +11,9 @@ exports.up = function(knex) {
     tbl
       .text("last_name", 128)
       .notNullable();
+    tbl
+      .text("password")
+      .notNullable();
   });
 };
 
