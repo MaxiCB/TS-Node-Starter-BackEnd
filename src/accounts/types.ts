@@ -1,7 +1,8 @@
 export interface account {
   id: number;
   email: string;
-  first_name: string;
+  password: string;
+  first_name?: string;
   last_name?: string;
 }
 

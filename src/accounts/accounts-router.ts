@@ -3,17 +3,17 @@ import express from "express";
 import {
   getAccountsHandler,
   getAccountByIDHandler,
-  addAccountHandler,
   updateAccountHandler,
   removeAccountHandler
 } from "./accounts-handler";
 
+import { privateRoute, tokenHandler } from "../auth/auth-middleware";
+
 const router = express.Router();
 
-router.get("/", getAccountsHandler);
-router.get("/:id", getAccountByIDHandler);
-router.post("/", addAccountHandler);
-router.post("/:id", updateAccountHandler);
-router.delete("/:id", removeAccountHandler);
+router.get("/", privateRoute, getAccountsHandler);
+router.get("/:id", privateRoute, getAccountByIDHandler);
+router.post("/:id", tokenHandler, updateAccountHandler);
+router.delete("/:id", tokenHandler, removeAccountHandler);
 
 export default router;
