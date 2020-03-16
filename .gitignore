@@ -93,3 +93,5 @@ typings/
 
 # DynamoDB Local files
 .dynamodb/
+# Devins color scheme
+.vscode/
