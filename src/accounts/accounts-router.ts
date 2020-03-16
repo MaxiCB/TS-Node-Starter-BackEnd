@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get("/", privateRoute, getAccountsHandler);
 router.get("/:id", privateRoute, getAccountByIDHandler);
-router.post("/:id", tokenHandler, updateAccountHandler);
+router.put("/:id", tokenHandler, updateAccountHandler);
 router.delete("/:id", tokenHandler, removeAccountHandler);
 
 export default router;

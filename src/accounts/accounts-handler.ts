@@ -54,7 +54,6 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
 export const updateAccountHandler = (req: Request, res: Response) => {
   const { body } = req;
   const accountUpdate = body;
-  console.log(body);
   const { params } = req;
   const id: number = parseInt(params.id);
   if (accountUpdate) {
@@ -64,7 +63,7 @@ export const updateAccountHandler = (req: Request, res: Response) => {
         return res.send(response);
       })
       .catch((err: Error) => {
-        return res.send({ error: err, message: "Unigue Email is required" });
+        return res.send(err);
       });
   } else {
     const error: Error = {
