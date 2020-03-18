@@ -27,6 +27,7 @@ Seeding data for development and testing
 |--|--|--|--|
 |POST|/api/auth/login|Login a User||
 |POST|/api/auth/register|Register a new  User||
+
 **Users**
 |Type|Path|Notes|Example|
 |--|--|--|--|
@@ -34,6 +35,7 @@ Seeding data for development and testing
 |GET|/api/users/|Fetch all User's||
 |GET|/api/users/:id|Fetch a User by ID||
 |DEL|/api/users/:id|Delete a User||
+
 **Posts**
 |Type|Path|Notes|Example|
 |--|--|--|--|
