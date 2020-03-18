@@ -14,6 +14,9 @@ exports.up = function(knex) {
     tbl
       .text("password")
       .notNullable();
+    tbl
+      .text("profileImage")
+      .notNullable();
   });
 };
 

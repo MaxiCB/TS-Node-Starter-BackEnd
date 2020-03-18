@@ -1,5 +1,5 @@
 // Express Types
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 // Accounts Methods
 import { find, findById, update, remove } from "./accounts-model";
 import {
@@ -8,6 +8,9 @@ import {
   errorBuilder,
   removeAccountBuilder
 } from "./types";
+
+import {join} from 'path'
+import * as multer from 'multer'
 
 export const getAccountsHandler = (_req: Request, res: Response) => {
   find()
@@ -96,3 +99,35 @@ export const removeAccountHandler = (req: Request, res: Response) => {
       return res.status(500).send(error);
     });
 };
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './public/accounts/images')
+  },
+  filename: (req, file, cb) => {
+    const id = req.params.id
+    let filetype = ''
+    if(file.mimetype === 'image/jpeg') {
+      filetype = 'jpeg'
+    }
+    cb(null, `account-${id}.${filetype}`)
+  }
+})
+
+const upload = multer.default({storage: storage})
+
+export const addAccountImageHandler = (req: Request, res: Response, next: NextFunction) => {
+  const {params} = req
+  const {id} = params
+  if(!req.file){
+    res.status(500).json({error: 'JPEG not included with request'})
+    return next();
+  }
+  return res.json({message: 'asdfkljahsf', url: `http://localhost:1337/api/users/${id}/image/${req.file.filename}`})
+}
+
+export const getAccountImageHandler = (req: Request, res: Response) => {
+  const {params} = req
+  const {id} = params
+  // res.se
+}

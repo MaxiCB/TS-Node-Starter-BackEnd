@@ -2,10 +2,11 @@
  * Required External Modules
  */
 
-import * as dotenv from "dotenv";
+import {config} from "dotenv";
 import express from "express";
 import cors from "cors";
-import * as bodyParser from "body-parser";
+import {json, urlencoded} from "body-parser";
+import {v2} from 'cloudinary'
 import helmet from "helmet";
 
 // Routers
@@ -13,7 +14,14 @@ import AccountsRouter from "./accounts/accounts-router";
 import PostsRouter from "./posts/post-router";
 import AuthRouter from "./auth/auth-router";
 
-dotenv.config();
+config();
+v2.config({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET
+})
+
+// v2.uploader.upload("src/test.png", (err, result) => {console.log(err, result)})
 
 /**
  * App Variables
@@ -35,11 +43,11 @@ const app = express();
 
 app.use(helmet());
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(json());
+app.use(urlencoded({ extended: false }));
 app.use(express.json());
 
-app.get("/", (req, res) => {
+app.get("/", (_req, res) => {
   res.json({ message: "Hello World" });
 });
 
