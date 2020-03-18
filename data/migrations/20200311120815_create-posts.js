@@ -6,7 +6,7 @@ exports.up = function(knex) {
           .text("post_title", 128)
           .notNullable();
         tbl
-          .text("post_author", 128)
+          .integer('author_id')
           .notNullable();
         tbl
           .text("post_content")

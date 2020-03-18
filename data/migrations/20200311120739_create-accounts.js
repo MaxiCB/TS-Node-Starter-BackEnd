@@ -17,6 +17,10 @@ exports.up = function(knex) {
     tbl
       .text("profileImage")
       .notNullable();
+    tbl
+      .foreign('id')
+      .references('author_id')
+      .inTable('posts')
   });
 };
 

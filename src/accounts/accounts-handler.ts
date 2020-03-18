@@ -9,7 +9,7 @@ import {
   removeAccountBuilder
 } from "./types";
 
-import {v2} from 'cloudinary';
+import { v2 } from "cloudinary";
 
 export const getAccountsHandler = (_req: Request, res: Response) => {
   find()
@@ -41,7 +41,6 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
         return res.status(200).json(response);
       } else {
         const error: Error = {
-          //ctrl click error to see type deffinetion
           name: "Bad Request",
           message: "Invalid account id"
         };
@@ -99,33 +98,37 @@ export const removeAccountHandler = (req: Request, res: Response) => {
     });
 };
 
-export const addAccountImageHandler = (req: Request, res: Response, next: NextFunction) => {
-  const {params} = req
-  const {id} = params
-  if(!req.file){
-    res.status(500).json({error: 'Image not included with request'})
+export const addAccountImageHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { params } = req;
+  const { id } = params;
+  if (!req.file) {
+    res.status(500).json({ error: "Image not included with request" });
     return next();
   }
-  v2.uploader.upload(`public/accounts/images/account-${id}.jpeg`, (err, result) => {
-    if(!err){
-    update({profileImage: result.url}, parseInt(id))
-    .then(success => {
-      console.log(success)
+  v2.uploader
+    .upload(`public/accounts/images/account-${id}.jpeg`, (err, result) => {
+      if (!err) {
+        update({ profileImage: result.url }, parseInt(id))
+          .then(success => {
+            console.log(success);
+          })
+          .catch(err => {
+            res.status(500).json(err);
+          });
+      } else {
+        console.log(err);
+      }
     })
-    .catch(err => {res.status(500).json(err)})
-  } else {
-    console.log(err)
-  }
-  })
-  .then(() => res.json({message: 'Successfully added account image!'}))
-  .catch(err => res.status(500).json(err))
-}
+    .then(() => res.json({ message: "Successfully added account image!" }))
+    .catch(err => res.status(500).json(err));
+};
 
 export const getAccountImageHandler = (req: Request, res: Response) => {
-  const {params} = req
-  const {id} = params
-  res.sendFile(
-    `account-${id}.jpeg`,
-    { root: 'public/accounts/images/'}
-  )
-}
+  const { params } = req;
+  const { id } = params;
+  res.sendFile(`account-${id}.jpeg`, { root: "public/accounts/images/" });
+};

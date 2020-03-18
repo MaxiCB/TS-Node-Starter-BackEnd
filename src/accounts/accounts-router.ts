@@ -33,6 +33,7 @@ const storage = multer.diskStorage({
 const upload = multer.default({storage: storage})
 
 router.post('/:id', upload.single('file'), privateRoute, addAccountImageHandler)
+
 // Development only endpoint. Image is stored on the user object
 router.get('/image/:id', getAccountImageHandler)
 
