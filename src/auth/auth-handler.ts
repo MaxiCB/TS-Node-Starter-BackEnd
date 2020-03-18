@@ -43,7 +43,7 @@ export const accountRegisterHandler = (req: Request, res: Response) => {
                 .status(201)
                 .send({ message: "Account created", accountID: id });
             })
-            .catch(err => res.send({ err: err }));
+            .catch(err => res.send({ err: err, here: 'here' }));
         }
       })
       .catch(() => {

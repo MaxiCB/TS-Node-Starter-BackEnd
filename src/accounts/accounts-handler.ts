@@ -9,8 +9,6 @@ import {
   removeAccountBuilder
 } from "./types";
 
-import * as path from 'path'
-import * as multer from 'multer'
 import {v2} from 'cloudinary';
 
 export const getAccountsHandler = (_req: Request, res: Response) => {
@@ -101,28 +99,11 @@ export const removeAccountHandler = (req: Request, res: Response) => {
     });
 };
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, './public/accounts/images')
-  },
-  filename: (req, file, cb) => {
-    const id = req.params.id
-    let filetype = ''
-    if(file.mimetype === 'image/jpeg') {
-      filetype = 'jpeg'
-    }
-    cb(null, `account-${id}.${filetype}`)
-  }
-})
-
-const upload = multer.default({storage: storage})
-
-
 export const addAccountImageHandler = (req: Request, res: Response, next: NextFunction) => {
   const {params} = req
   const {id} = params
   if(!req.file){
-    res.status(500).json({error: 'JPEG not included with request'})
+    res.status(500).json({error: 'Image not included with request'})
     return next();
   }
   v2.uploader.upload(`public/accounts/images/account-${id}.jpeg`, (err, result) => {
@@ -136,7 +117,7 @@ export const addAccountImageHandler = (req: Request, res: Response, next: NextFu
     console.log(err)
   }
   })
-  .then(result => res.json({result: result, message: 'Success', url: `http://localhost:1337/api/users/${id}/image/${req.file.filename}`}))
+  .then(() => res.json({message: 'Successfully added account image!'}))
   .catch(err => res.status(500).json(err))
 }
 
