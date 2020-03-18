@@ -5,7 +5,8 @@ import {
   getAccountByIDHandler,
   updateAccountHandler,
   removeAccountHandler,
-  addAccountImageHandler
+  addAccountImageHandler,
+  getAccountImageHandler
 } from "./accounts-handler";
 
 import { privateRoute } from "../auth/auth-middleware";
@@ -32,6 +33,7 @@ const storage = multer.diskStorage({
 const upload = multer.default({storage: storage})
 
 router.post('/:id', upload.single('file'), addAccountImageHandler)
+router.get('/image/:id', getAccountImageHandler)
 
 router.get("/", privateRoute, getAccountsHandler);
 router.get("/:id", privateRoute, getAccountByIDHandler);

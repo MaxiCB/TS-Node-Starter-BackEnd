@@ -21,8 +21,6 @@ v2.config({
   api_secret: process.env.CLOUD_API_SECRET
 })
 
-// v2.uploader.upload("src/test.png", (err, result) => {console.log(err, result)})
-
 /**
  * App Variables
  */
