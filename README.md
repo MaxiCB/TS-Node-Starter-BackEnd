@@ -35,6 +35,8 @@ Seeding data for development and testing
 |POST|/api/users/:id|Add a Image to a User||
 |GET|/api/users/|Fetch all User's||
 |GET|/api/users/:id|Fetch a User by ID||
+|GET|/api/users/search/:string|Fetch a User by partial Name||
+|GET|/api/users/email/:string|Fetch a User partial Email||
 |DEL|/api/users/:id|Delete a User||
 
 **Posts**
@@ -44,8 +46,9 @@ Seeding data for development and testing
 |POST|/api/posts/:id|Add a Image to a Post||
 |PUT|/api/posts/:id|Update a Post||
 |GET|/api/posts/|Fetch all Post's||
-|GET|/api/posts/:id|Fetch a Post by ID||
-|GET|/api/posts/:Userid|Fetch all posts by UserID||
+|GET|/api/posts/:id|Fetch a Post by PostID||
+|GET|/api/posts/author/:UserID|Fetch all posts by UserID||
+|GET|/api/posts/search/:string|Fetch all posts by partial Title or Content||
 |DEL|/api/posts/:id|Delete a Post||
 
 **Analytics**

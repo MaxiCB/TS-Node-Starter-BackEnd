@@ -1,7 +1,7 @@
 // Express Types
 import { Request, Response, NextFunction } from "express";
 // Accounts Methods
-import { find, findById, update, remove } from "./accounts-model";
+import { find, findById,findByEmail, findByPartial, update, remove, findByEmailPartial } from "./accounts-model";
 import {
   account,
   accountsResponseBuilder,
@@ -43,6 +43,48 @@ export const getAccountByIDHandler = (req: Request, res: Response) => {
         const error: Error = {
           name: "Bad Request",
           message: "Invalid account id"
+        };
+        return res.status(404).json(error);
+      }
+    })
+    .catch((err: Error) => {
+      return res.status(500).json(err);
+    });
+};
+
+export const getAccountByEmailHandler = (req: Request, res: Response) => {
+  const { params } = req;
+  const string: string = params.string;
+  findByEmailPartial(string)
+    .then((account: account[]) => {
+      if (account) {
+        const response = accountsResponseBuilder(account);
+        return res.status(200).json(response);
+      } else {
+        const error: Error = {
+          name: "Bad Request",
+          message: "Invalid account email"
+        };
+        return res.status(404).json(error);
+      }
+    })
+    .catch((err: Error) => {
+      return res.status(500).json(err);
+    });
+};
+
+export const getAccountByPartialHandler = (req: Request, res: Response) => {
+  const { params } = req;
+  const string: string = params.string;
+  findByPartial(string)
+    .then((accounts: account[]) => {
+      if (accounts) {
+        const response = accountsResponseBuilder(accounts);
+        return res.status(200).json(response);
+      } else {
+        const error: Error = {
+          name: "Bad Request",
+          message: "Invalid Search Param"
         };
         return res.status(404).json(error);
       }

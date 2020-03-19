@@ -19,6 +19,14 @@ export const findByUserID = (id: number) => {
     .orderBy('p.id')
 }
 
+export const findByPartial = (string: string) => {
+  return db("posts")
+    .select('*')
+    .where('post_title', 'like', `%${string}%`)
+    .orWhere('post_content', 'like', `%${string}%`)
+    .orderBy('id')
+}
+
 export const add = (data: object) => {
   return db("posts").insert(data);
 }

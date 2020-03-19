@@ -6,7 +6,8 @@ import {
   updatePostHandler,
   addPostHandler,
   addPostImageHandler,
-  getPostsByAuthor
+  getPostsByAuthor,
+  getPostsByPartial
 } from "./posts-handler";
 
 import { privateRoute } from "../auth/auth-middleware";
@@ -32,18 +33,15 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer.default({ storage: storage });
-router.post('/:id', upload.single('file'), privateRoute, addPostImageHandler)
+router.post("/:id", upload.single("file"), privateRoute, addPostImageHandler);
 
-/**
- * Testing of fetching a specific users post
- * @param UserID: number
- * @returns Array
- */
-router.get('/author/:id', privateRoute, getPostsByAuthor)
 
 router.get("/", privateRoute, getPostsHandler);
-router.post("/", privateRoute, addPostHandler);
 router.get("/:id", privateRoute, getPostHandler);
+router.get("/author/:id", privateRoute, getPostsByAuthor);
+router.get("/search/:string", privateRoute, getPostsByPartial);
+
+router.post("/", privateRoute, addPostHandler);
 router.put("/:id", privateRoute, updatePostHandler);
 router.delete("/:id", privateRoute, removePostHandler);
 

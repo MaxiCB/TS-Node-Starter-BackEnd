@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import { add, find, findById, findByUserID, remove, update } from "./post-model";
+import { add, find, findById, findByUserID,findByPartial, remove, update } from "./post-model";
 import {
   post,
   postsResponseBuilder,
@@ -66,6 +66,29 @@ export const getPostsByAuthor = (req: Request, res: Response) => {
         const err: Error = {
           name: "Bad Request",
           message: "Invalid Author ID"
+        };
+        const response = errorResponseBuilder(err);
+        return res.status(404).send(response);
+      }
+    })
+    .catch((err: Error) => {
+      const error = errorResponseBuilder(err);
+      return res.status(500).send(error);
+    });
+}
+
+export const getPostsByPartial = (req: Request, res: Response) => {
+  const { params } = req;
+  const partial: string = params.string;
+  findByPartial(partial)
+    .then((posts: post[]) => {
+      if (posts) {
+        const response = postsResponseBuilder(posts);
+        return res.status(200).send(response);
+      } else {
+        const err: Error = {
+          name: "Bad Request",
+          message: "Invalid Search Param"
         };
         const response = errorResponseBuilder(err);
         return res.status(404).send(response);

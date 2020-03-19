@@ -10,11 +10,26 @@ export const findByEmail = (email: string) => {
     .first();
 };
 
+export const findByEmailPartial = (email: string) => {
+  return db("accounts")
+  .select('*')
+  .where('email', 'like', `%${email}%`)
+  .orderBy('id')
+};
+
 export const findById = (id: number) => {
   return db("accounts")
     .where({ id })
     .first();
 };
+
+export const findByPartial = (string: string) => {
+  return db("accounts")
+    .select('*')
+    .where('first_name', 'like', `%${string}%`)
+    .orWhere('last_name', 'like', `%${string}%`)
+    .orderBy('id')
+}
 
 export const add = (data: object) => {
   return db("accounts").insert(data);
