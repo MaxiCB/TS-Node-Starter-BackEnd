@@ -25,7 +25,7 @@ Seeding data for development and testing
 **Auth**
 |Type|Path|Notes|Example|
 |--|--|--|--|
-|POST|/api/auth/login|Login a User||
+|POST|/api/auth/login|Login a User|[Link](#post-apiauthregister)|
 |POST|/api/auth/register|Register a new  User||
 
 **Users**
