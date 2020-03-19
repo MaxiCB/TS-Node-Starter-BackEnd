@@ -5,7 +5,8 @@ import {
   removePostHandler,
   updatePostHandler,
   addPostHandler,
-  addPostImageHandler
+  addPostImageHandler,
+  getPostsByAuthor
 } from "./posts-handler";
 
 import { privateRoute } from "../auth/auth-middleware";
@@ -14,6 +15,8 @@ import * as multer from "multer";
 
 const router = express.Router();
 
+// Multer image handling.
+// Look into seperating this and making it dynamic and usable betweem routes
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "./public/posts/images");
@@ -29,8 +32,14 @@ const storage = multer.diskStorage({
 });
 
 const upload = multer.default({ storage: storage });
-
 router.post('/:id', upload.single('file'), privateRoute, addPostImageHandler)
+
+/**
+ * Testing of fetching a specific users post
+ * @param UserID: number
+ * @returns Array
+ */
+router.get('/author/:id', privateRoute, getPostsByAuthor)
 
 router.get("/", privateRoute, getPostsHandler);
 router.post("/", privateRoute, addPostHandler);

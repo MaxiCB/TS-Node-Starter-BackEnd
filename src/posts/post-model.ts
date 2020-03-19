@@ -11,6 +11,14 @@ export const findById = (id: number) => {
     .first();
 }
 
+export const findByUserID = (id: number) => {
+  return db("posts")
+    .select('p.*')
+    .from('posts as p')
+    .where({author_id: id})
+    .orderBy('p.id')
+}
+
 export const add = (data: object) => {
   return db("posts").insert(data);
 }

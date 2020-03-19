@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 
-import { add, find, findById, remove, update } from "./post-model";
+import { add, find, findById, findByUserID, remove, update } from "./post-model";
 import {
   post,
   postsResponseBuilder,
@@ -54,6 +54,29 @@ export const getPostHandler = (req: Request, res: Response) => {
     });
 };
 
+export const getPostsByAuthor = (req: Request, res: Response) => {
+  const { params } = req;
+  const id: number = parseInt(params.id);
+  findByUserID(id)
+    .then((posts: post[]) => {
+      if (posts) {
+        const response = postsResponseBuilder(posts);
+        return res.status(200).send(response);
+      } else {
+        const err: Error = {
+          name: "Bad Request",
+          message: "Invalid Author ID"
+        };
+        const response = errorResponseBuilder(err);
+        return res.status(404).send(response);
+      }
+    })
+    .catch((err: Error) => {
+      const error = errorResponseBuilder(err);
+      return res.status(500).send(error);
+    });
+}
+
 export const removePostHandler = (req: Request, res: Response) => {
   const { params } = req;
   const id: number = parseInt(params.id);
@@ -100,6 +123,7 @@ export const addPostHandler = (req: Request, res: Response) => {
       });
   });
 };
+
 export const updatePostHandler = (req: Request, res: Response) => {
   const { body } = req;
   const postUpdate = body;

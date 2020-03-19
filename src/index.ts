@@ -12,6 +12,7 @@ import helmet from "helmet";
 // Routers
 import AccountsRouter from "./accounts/accounts-router";
 import PostsRouter from "./posts/post-router";
+import AnalyticsRouter from './analytics/analytics-router'
 import AuthRouter from "./auth/auth-router";
 
 config();
@@ -53,6 +54,7 @@ app.get("/", (_req, res) => {
 app.use("/api/auth", AuthRouter);
 app.use("/api/users", AccountsRouter);
 app.use("/api/posts", PostsRouter);
+app.use("/api/analytics", AnalyticsRouter)
 
 /**
  * Server Activation
