@@ -195,6 +195,6 @@ export const addPostImageHandler = (
         console.log(err);
       }
     })
-    .then(() => res.json({ message: "Successfully added account image!" }))
+    .then(() => res.json({ message: "Successfully added post image!" }))
     .catch(err => res.status(500).json(err));
 };

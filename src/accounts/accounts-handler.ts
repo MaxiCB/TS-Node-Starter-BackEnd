@@ -1,7 +1,7 @@
 // Express Types
 import { Request, Response, NextFunction } from "express";
 // Accounts Methods
-import { find, findById,findByEmail, findByPartial, update, remove, findByEmailPartial } from "./accounts-model";
+import { find, findById, findByPartial, update, remove, findByEmailPartial } from "./accounts-model";
 import {
   account,
   accountsResponseBuilder,
