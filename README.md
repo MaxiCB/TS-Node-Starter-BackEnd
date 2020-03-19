@@ -32,6 +32,7 @@ Seeding data for development and testing
 |Type|Path|Notes|Example|
 |--|--|--|--|
 |PUT|/api/users/:id|Update a User||
+|POST|/api/users/:id|Add a User Image||
 |GET|/api/users/|Fetch all User's||
 |GET|/api/users/:id|Fetch a User by ID||
 |DEL|/api/users/:id|Delete a User||
@@ -40,6 +41,7 @@ Seeding data for development and testing
 |Type|Path|Notes|Example|
 |--|--|--|--|
 |POST|/api/posts/|Add a Post||
+|POST|/api/posts/:id|Add a Post Image||
 |PUT|/api/posts/:id|Update a Post||
 |GET|/api/posts/|Fetch all Post's||
 |GET|/api/posts/:id|Fetch a Post by ID||

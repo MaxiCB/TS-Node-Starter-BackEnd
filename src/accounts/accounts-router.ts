@@ -11,7 +11,6 @@ import {
 
 import { privateRoute } from "../auth/auth-middleware";
 
-import {join} from 'path'
 import * as multer from 'multer'
 
 const router = express.Router();

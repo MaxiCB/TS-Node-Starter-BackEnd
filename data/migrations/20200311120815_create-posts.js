@@ -11,6 +11,10 @@ exports.up = function(knex) {
         tbl
           .text("post_content")
           .notNullable();
+        tbl
+          .text("post_image")
+          .defaultTo('DEFAULT')
+          .notNullable();
       });
 };
 

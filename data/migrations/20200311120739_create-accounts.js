@@ -16,7 +16,8 @@ exports.up = function(knex) {
       .notNullable();
     tbl
       .text("profileImage")
-      .notNullable();
+      .notNullable()
+      .defaultTo('DEFAULT')
     tbl
       .foreign('id')
       .references('author_id')

@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 
 import { add, find, findById, remove, update } from "./post-model";
 import {
@@ -8,6 +8,7 @@ import {
   postResponseBuilder,
   removePostResponseBuilder
 } from "./types";
+import { v2 } from "cloudinary";
 
 export const getPostsHandler = (_req: Request, res: Response) => {
   find()
@@ -120,4 +121,33 @@ export const updatePostHandler = (req: Request, res: Response) => {
     };
     return res.status(400).send(error);
   }
+};
+
+export const addPostImageHandler = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { params } = req;
+  const { id } = params;
+  if (!req.file) {
+    res.status(500).json({ error: "Image not included with request" });
+    return next();
+  }
+  v2.uploader
+    .upload(`public/posts/images/account-${id}.jpeg`, (err, result) => {
+      if (!err) {
+        update({ profileImage: result.url }, parseInt(id))
+          .then(success => {
+            console.log(success);
+          })
+          .catch(err => {
+            res.status(500).json(err);
+          });
+      } else {
+        console.log(err);
+      }
+    })
+    .then(() => res.json({ message: "Successfully added account image!" }))
+    .catch(err => res.status(500).json(err));
 };
