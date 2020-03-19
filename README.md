@@ -31,25 +31,25 @@ Seeding data for development and testing
 **Users**
 |Type|Path|Notes|Example|
 |--|--|--|--|
-|PUT|/api/users/:id|Update a User||
-|POST|/api/users/:id|Add a Image to a User||
-|GET|/api/users/|Fetch all User's||
-|GET|/api/users/:id|Fetch a User by ID||
-|GET|/api/users/search/:string|Fetch a User by partial Name||
-|GET|/api/users/email/:string|Fetch a User by partial Email||
-|DEL|/api/users/:id|Delete a User||
+|PUT|`/api/users/:id`|Update a User|[Link](#put-apiusers_id)|
+|POST|`/api/users/:id`|Add a Image to a User|[Link](#post-apiusers_id)|
+|GET|`/api/users/`|Fetch all User's|[Link](#get-apiusers)|
+|GET|`/api/users/:id`|Fetch a User by ID|[Link](#get-apiusers_id)|
+|GET|`/api/users/search/:string`|Fetch a User by partial Name|[Link](#get-apiuserssearch_string)|
+|GET|`/api/users/email/:string`|Fetch a User by partial Email|[Link](#get-apiusersemail_string)|
+|DEL|`/api/users/:id`|Delete a User|[Link](#del-apiusers_id)|
 
 **Posts**
 |Type|Path|Notes|Example|
 |--|--|--|--|
-|POST|/api/posts/|Add a Post||
-|POST|/api/posts/:id|Add a Image to a Post||
-|PUT|/api/posts/:id|Update a Post||
-|GET|/api/posts/|Fetch all Post's||
-|GET|/api/posts/:id|Fetch a Post by PostID||
-|GET|/api/posts/author/:UserID|Fetch all posts by UserID||
-|GET|/api/posts/search/:string|Fetch all posts by partial Title or Content||
-|DEL|/api/posts/:id|Delete a Post||
+|POST|`/api/posts/`|Add a Post|[Link](#post-apiposts)|
+|POST|`/api/posts/:id`|Add a Image to a Post|[Link](#post-apiposts_id)|
+|PUT|`/api/posts/:id`|Update a Post|[Link](#put-apiposts_id)|
+|GET|`/api/posts/`|Fetch all Post's|[Link](#get-apiposts)|
+|GET|`/api/posts/:id`|Fetch a Post by PostID|[Link](#get-apiposts_id)|
+|GET|`/api/posts/author/:authorID`|Fetch all posts by UserID|[Link](#get-apipostsauthor_authorID)|
+|GET|`/api/posts/search/:string`|Fetch all posts by partial Title or Content|[Link](#get-apipostssearch_string)|
+|DEL|`/api/posts/:id`|Delete a Post|[Link](#del-apiposts_id)|
 
 **Analytics**
 |Type|Path|Notes|Example|
@@ -63,7 +63,7 @@ Seeding data for development and testing
 ## User Examples
 
 ### Account Registration
-#### POST - /api/auth/register
+#### POST /api/auth/register
 Request Data
 ```json
 {
@@ -83,7 +83,7 @@ Response Data
 }
 ```
 ### Account Login
-#### POST - /api/auth/login
+#### POST /api/auth/login
 Request Data
 ```json
 {
@@ -99,7 +99,7 @@ Response Data
 }
 ```
 ### User Updating
-#### PUT - /api/users/:id
+#### PUT /api/users/:id
 Request Data
 ```json
 {
@@ -116,7 +116,7 @@ Response Data
 }
 ```
 ### Adding User Image
-#### POST - /api/users/:id
+#### POST /api/users/:id
 Request Data - Needs to be form-data - key = file
 ```json
 {
@@ -130,7 +130,7 @@ Response Data
 }
 ```
 ### Fetching All Users
-#### GET - /api/users/
+#### GET /api/users/
 Response Data
 ```json
 {
@@ -140,7 +140,7 @@ Response Data
 }
 ```
 ### Fetching Specific User
-#### GET - /api/users/:id
+#### GET /api/users/:id
 Response Data
 ```json
 {
@@ -150,7 +150,7 @@ Response Data
 }
 ```
 ### Fetching Users based on First or Last name
-#### GET - /api/users/search/:string
+#### GET /api/users/search/:string
 Response Data
 ```json
 {
@@ -160,7 +160,7 @@ Response Data
 }
 ```
 ### Fetching Users based on Email
-#### GET - /api/users/email/:string
+#### GET /api/users/email/:string
 Response Data
 ```json
 {
@@ -170,7 +170,7 @@ Response Data
 }
 ```
 ### Deleting a User
-#### DEL - /api/users/:id
+#### DEL /api/users/:id
 Response Data
 ```json
 {
@@ -180,7 +180,7 @@ Response Data
 
 ## Post Examples
 
-#### POST - /api/posts/
+#### POST /api/posts/
 Request Data
 ```json
 {
@@ -196,7 +196,7 @@ Response Data
 }
 ```
 ### Adding Post Image
-#### POST - /api/post/:id
+#### POST /api/post/:id
 Request Data - Needs to be form-data - key = file
 ```json
 {
@@ -210,7 +210,7 @@ Response Data
 }
 ```
 ### User Updating
-#### PUT - /api/post/:id
+#### PUT /api/post/:id
 Request Data
 ```json
 {
@@ -227,7 +227,7 @@ Response Data
 }
 ```
 ### Fetching All Users
-#### GET - /api/posts/
+#### GET /api/posts/
 Response Data
 ```json
 {
@@ -237,7 +237,7 @@ Response Data
 }
 ```
 ### Fetching Specific Post
-#### GET - /api/posts/:id
+#### GET /api/posts/:id
 Response Data
 ```json
 {
@@ -247,7 +247,7 @@ Response Data
 }
 ```
 ### Fetching Posts based on Author
-#### GET - /api/users/author/:authorID
+#### GET /api/users/author/:authorID
 Response Data
 ```json
 {
@@ -257,7 +257,7 @@ Response Data
 }
 ```
 ### Fetching Posts based on Title or Content
-#### GET - /api/posts/search/:string
+#### GET /api/posts/search/:string
 Response Data
 ```json
 {
@@ -267,7 +267,7 @@ Response Data
 }
 ```
 ### Deleting a Post
-#### DEL - /api/posts/:id
+#### DEL /api/posts/:id
 Response Data
 ```json
 {
